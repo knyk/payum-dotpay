@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Knyk\PayumDotpaySyliusPlugin\Api;
+namespace Knyk\SyliusDotpayPlugin\Api;
 
 final class DotpayApi
 {

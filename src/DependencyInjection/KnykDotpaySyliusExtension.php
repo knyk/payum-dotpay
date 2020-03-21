@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Knyk\PayumDotpaySyliusPlugin\DependencyInjection;
+namespace Knyk\SyliusDotpayPlugin\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class PayumDotpaySyliusExtension extends Extension
+final class KnykDotpaySyliusExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {

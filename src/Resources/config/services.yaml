@@ -1,12 +1,12 @@
 services:
-  knyk.payum_dotpay_sylius.gateway_factory.dotpay:
+  knyk.dotpay_sylius.gateway_factory.dotpay:
     class: Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder
     arguments:
-      - Knyk\PayumDotpaySyliusPlugin\Factory\DotpayGatewayFactory
+      - Knyk\SyliusDotpayPlugin\Factory\DotpayGatewayFactory
     tags:
       - { name: payum.gateway_factory_builder, factory: dotpay }
-  
-  Knyk\PayumDotpaySyliusPlugin\Form\Type\SyliusGatewayConfigurationType:
+
+  Knyk\SyliusDotpayPlugin\Form\Type\SyliusGatewayConfigurationType:
     tags:
       - { name: sylius.gateway_configuration_type, type: dotpay, label: Dotpay }
       - { name: form.type }

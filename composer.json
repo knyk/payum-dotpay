@@ -1,8 +1,8 @@
 {
-    "name": "knyk/payum-dotpay-sylius-plugin",
+    "name": "knyk/sylius-dotpay-plugin",
     "type": "library",
-    "description": "Payum Dotpay implementation for Sylius",
-    "keywords": ["payum", "dotpay"],
+    "description": "Dotpay implementation for Sylius",
+    "keywords": ["payum", "dotpay", "sylius"],
     "license": "MIT",
     "authors": [
         {
@@ -15,6 +15,6 @@
         "sylius/sylius": "^1.7"
     },
     "autoload": {
-        "psr-4": { "Knyk\\PayumDotpaySyliusPlugin\\": "/src" }
+        "psr-4": { "Knyk\\SyliusDotpayPlugin\\": "/src" }
     }
 }

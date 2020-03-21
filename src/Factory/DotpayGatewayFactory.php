@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Knyk\PayumDotpaySyliusPlugin\Factory;
+namespace Knyk\SyliusDotpayPlugin\Factory;
 
-use Knyk\PayumDotpaySyliusPlugin\Api\DotpayApi;
+use Knyk\SyliusDotpayPlugin\Api\DotpayApi;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
 
