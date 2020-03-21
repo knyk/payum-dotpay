@@ -5,3 +5,8 @@ services:
       - Knyk\Payum\Dotpay\Factory\DotpayGatewayFactory
     tags:
       - { name: payum.gateway_factory_builder, factory: dotpay }
+  
+  Knyk\Payum\Dotpay\Form\Type\SyliusGatewayConfigurationType:
+    tags:
+      - { name: sylius.gateway_configuration_type, type: dotpay, label: Dotpay }
+      - { name: form.type }
