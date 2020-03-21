@@ -1,0 +1,26 @@
+{
+    "name": "knyk/payum-dotpay-sylius-plugin",
+    "type": "library",
+    "description": "Payum Dotpay implementation for Sylius",
+    "keywords": ["payum", "dotpay"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kamil Falgowski",
+            "email": "kamfalg@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "sylius/sylius": "^1.7"
+    },
+    "autoload": {
+        "psr-4": { "Knyk\\Payum\\Dotpay\\": "/src" }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Knyk\\Payum\\Dotpay\\Tests\\": "tests/",
+            "spec\\": "spec/"
+        }
+    }
+}
