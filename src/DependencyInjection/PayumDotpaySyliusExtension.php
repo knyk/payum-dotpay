@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Knyk\Payum\Dotpay\DependencyInjection;
+namespace Knyk\PayumDotpaySyliusPlugin\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

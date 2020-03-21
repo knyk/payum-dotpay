@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Knyk\Payum\Dotpay\Form\Type;
+namespace Knyk\PayumDotpaySyliusPlugin\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
