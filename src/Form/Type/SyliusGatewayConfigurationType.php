@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Knyk\SyliusDotpayPlugin\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -32,5 +33,7 @@ final class SyliusGatewayConfigurationType extends AbstractType
                 ],
             ]
         );
+
+        $builder->add('sandbox', CheckboxType::class);
     }
 }

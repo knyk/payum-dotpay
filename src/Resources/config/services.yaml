@@ -5,8 +5,28 @@ services:
       - Knyk\SyliusDotpayPlugin\Factory\DotpayGatewayFactory
     tags:
       - { name: payum.gateway_factory_builder, factory: dotpay }
-
+  
   Knyk\SyliusDotpayPlugin\Form\Type\SyliusGatewayConfigurationType:
     tags:
       - { name: sylius.gateway_configuration_type, type: dotpay, label: Dotpay }
       - { name: form.type }
+  
+  Knyk\SyliusDotpayPlugin\Formatter\MoneyWithoutCurrencyCodeFormatter:
+    arguments:
+      $moneyFormatter: '@sylius.money_formatter'
+  
+  Knyk\SyliusDotpayPlugin\Factory\ActionDataFactory:
+    arguments:
+      $moneyFormatter: '@Knyk\SyliusDotpayPlugin\Formatter\MoneyWithoutCurrencyCodeFormatter'
+  
+  Knyk\SyliusDotpayPlugin\Action\CaptureAction:
+    public: true
+    arguments:
+      $actionDataFactory: '@Knyk\SyliusDotpayPlugin\Factory\ActionDataFactory'
+    tags:
+      - { name: payum.action, factory: dotpay, alias: payum.action.capture }
+  
+  Knyk\SyliusDotpayPlugin\Action\StatusAction:
+    public: true
+    tags:
+      - { name: payum.action, factory: dotpay, alias: payum.action.status }
