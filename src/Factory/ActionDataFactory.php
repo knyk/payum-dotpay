@@ -32,9 +32,10 @@ final class ActionDataFactory
             $this->moneyFormatter->format($payment->getAmount(), $payment->getCurrencyCode()),
             $payment->getCurrencyCode(),
             $api::description($payment->getOrder()->getNumber()),
-            $token->getTargetUrl(),
+            $token->getAfterUrl(),
             $api::type(),
             $token->getTargetUrl(),
+            $api->ignoreLastPaymentChannel(),
         ];
 
         $chk = $api->generateChecksum($checksumData);
@@ -44,10 +45,11 @@ final class ActionDataFactory
             $api->id(),
             $this->moneyFormatter->format($payment->getAmount(), $payment->getCurrencyCode()),
             $payment->getCurrencyCode(),
-            $token->getTargetUrl(),
+            $token->getAfterUrl(),
             (string) $api::type(),
             $token->getTargetUrl(),
             $api::description($payment->getOrder()->getNumber()),
+            (int) $api->ignoreLastPaymentChannel(),
             $chk
         );
     }

@@ -35,5 +35,6 @@ final class SyliusGatewayConfigurationType extends AbstractType
         );
 
         $builder->add('sandbox', CheckboxType::class);
+        $builder->add('ignoreLastPaymentChannel', CheckboxType::class);
     }
 }

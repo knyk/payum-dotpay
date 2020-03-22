@@ -14,6 +14,7 @@ class CaptureActionData
     private string $type;
     private string $urlc;
     private string $description;
+    private int $ignoreLastPaymentChannel;
     private string $chk;
 
     public function __construct(
@@ -25,6 +26,7 @@ class CaptureActionData
         string $type,
         string $urlc,
         string $description,
+        int $ignoreLastPaymentChannel,
         string $chk
     ) {
         $this->apiVersion = $apiVersion;
@@ -35,6 +37,7 @@ class CaptureActionData
         $this->type = $type;
         $this->urlc = $urlc;
         $this->description = $description;
+        $this->ignoreLastPaymentChannel = $ignoreLastPaymentChannel;
         $this->chk = $chk;
     }
 
@@ -49,6 +52,7 @@ class CaptureActionData
             'url' => $this->url,
             'type' => $this->type,
             'urlc' => $this->urlc,
+            'ignore_last_payment_channel' => $this->ignoreLastPaymentChannel,
             'chk' => $this->chk,
         ];
     }

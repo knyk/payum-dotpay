@@ -22,7 +22,8 @@ final class DotpayGatewayFactory extends GatewayFactory
         $config['payum.api'] = fn(ArrayObject $config) => new DotpayApi(
             $config->get('id'),
             $config->get('pin'),
-            $config->get('sandbox')
+            $config->get('sandbox'),
+            $config->get('ignoreLastPaymentChannel')
         );
     }
 }

@@ -13,15 +13,21 @@ final class DotpayApi
     private const DESCRIPTION_PATTERN = 'Order number: %s';
     private const TYPE = 0;
 
+    public const STATUS_QUERY_PARAM = 'status';
+    public const STATUS_CAPTURED = 'OK';
+    public const STATUS_FAILED = 'FAIL';
+
     private string $id;
     private string $pin;
     private bool $sandbox;
+    private bool $ignoreLastPaymentChannel;
 
-    public function __construct(string $id, string $pin, bool $sandbox = false)
+    public function __construct(string $id, string $pin, bool $sandbox = false, bool $ignoreLastPaymentChannel = false)
     {
         $this->id = $id;
         $this->pin = $pin;
         $this->sandbox = $sandbox;
+        $this->ignoreLastPaymentChannel = $ignoreLastPaymentChannel;
     }
 
     public function id(): string
@@ -32,6 +38,11 @@ final class DotpayApi
     public function host(): string
     {
         return $this->sandbox ? self::HOST_TEST : self::HOST_PRODUCTION;
+    }
+
+    public function ignoreLastPaymentChannel(): bool
+    {
+        return $this->ignoreLastPaymentChannel;
     }
 
     public static function apiVersion(): string
