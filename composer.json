@@ -12,7 +12,8 @@
     ],
     "require": {
         "php": ">=7.4",
-        "sylius/sylius": "^1.7"
+        "sylius/sylius": "^1.7",
+        "ext-bcmath": "*"
     },
     "autoload": {
         "psr-4": { "Knyk\\SyliusDotpayPlugin\\": "/src" }

@@ -37,8 +37,8 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface
         $status = $getHttpRequest->query[DotpayApi::STATUS_QUERY_PARAM];
 
         switch ($status) {
-            case DotpayApi::STATUS_CAPTURED:
-                $request->markCaptured();
+            case DotpayApi::STATUS_PENDING:
+                $request->markPending();
                 break;
             case DotpayApi::STATUS_FAILED:
                 $request->markFailed();

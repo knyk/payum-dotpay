@@ -14,8 +14,10 @@ final class DotpayApi
     private const TYPE = 0;
 
     public const STATUS_QUERY_PARAM = 'status';
-    public const STATUS_CAPTURED = 'OK';
+    public const STATUS_PENDING = 'OK';
     public const STATUS_FAILED = 'FAIL';
+
+    public const RESPONSE_NOTIFY_SUCCESS = 'OK';
 
     private string $id;
     private string $pin;

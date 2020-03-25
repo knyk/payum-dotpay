@@ -11,13 +11,11 @@ services:
       - { name: sylius.gateway_configuration_type, type: dotpay, label: Dotpay }
       - { name: form.type }
   
-  Knyk\SyliusDotpayPlugin\Formatter\MoneyWithoutCurrencyCodeFormatter:
-    arguments:
-      $moneyFormatter: '@sylius.money_formatter'
+  Knyk\SyliusDotpayPlugin\Formatter\MoneyFormatter:
   
   Knyk\SyliusDotpayPlugin\Factory\ActionDataFactory:
     arguments:
-      $moneyFormatter: '@Knyk\SyliusDotpayPlugin\Formatter\MoneyWithoutCurrencyCodeFormatter'
+      $moneyFormatter: '@Knyk\SyliusDotpayPlugin\Formatter\MoneyFormatter'
   
   Knyk\SyliusDotpayPlugin\Action\CaptureAction:
     public: true
@@ -30,3 +28,10 @@ services:
     public: true
     tags:
       - { name: payum.action, factory: dotpay, alias: payum.action.status }
+
+  Knyk\SyliusDotpayPlugin\Action\NotifyAction:
+    public: true
+    arguments:
+      $moneyFormatter: '@Knyk\SyliusDotpayPlugin\Formatter\MoneyFormatter'
+    tags:
+      - { name: payum.action, factory: dotpay, alias: payum.action.notify }

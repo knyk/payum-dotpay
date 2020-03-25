@@ -14,6 +14,7 @@ use Payum\Core\Reply\HttpPostRedirect;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryAwareTrait;
+use Payum\Core\Security\TokenInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 
 final class CaptureAction implements ActionInterface, ApiAwareInterface, GenericTokenFactoryAwareInterface
@@ -39,9 +40,25 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
+        /** @var PaymentInterface $payment */
+        $payment = $request->getModel();
+
+        /** @var TokenInterface $token */
+        $token = $request->getToken();
+
+        $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
+
+        $captureActionData = $this->actionDataFactory->createCaptureActionData(
+            $request,
+            $this->api,
+            $notifyToken
+        );
+
+        $payment->setDetails(['control' => $captureActionData->control()]);
+
         throw new HttpPostRedirect(
             $this->api->host(),
-            $this->actionDataFactory->createCaptureActionData($request, $this->api)->toArray()
+            $captureActionData->toArray()
         );
     }
 
