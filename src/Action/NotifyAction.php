@@ -17,7 +17,6 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Request\Notify;
-use Sylius\Component\Core\Model\PaymentInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class NotifyAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
@@ -43,13 +42,10 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface, ApiA
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        /** @var PaymentInterface $payment */
-        $payment = $request->getFirstModel();
+        $details = $request->getModel();
 
         $getHttpRequest = new GetHttpRequest();
         $this->gateway->execute($getHttpRequest);
-
-        $details = $payment->getDetails();
 
         if (isset($details[DotpayApi::STATUS_DETAILS_KEY])) {
             throw new NotFoundHttpException('Payment already confirmed.');
@@ -71,10 +67,6 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface, ApiA
             throw new InvalidArgumentException('Signature is invalid.');
         }
 
-        if ($this->moneyFormatter->format($payment->getAmount()) !== $getHttpRequest->request['operation_amount']) {
-            throw new InvalidArgumentException('Payment amount different than operation amount.');
-        }
-
         $details['dotpay_operation_number'] = $getHttpRequest->request['operation_number'];
         $details[DotpayApi::STATUS_DETAILS_KEY] = $getHttpRequest->request['operation_status'];
         $details['dotpay_operation_amount'] = $getHttpRequest->request['operation_amount'];
@@ -82,8 +74,6 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface, ApiA
         $details['dotpay_operation_original_amount'] = $getHttpRequest->request['operation_original_amount'];
         $details['dotpay_operation_original_currency'] = $getHttpRequest->request['operation_original_currency'];
         $details['dotpay_operation_datetime'] = $getHttpRequest->request['operation_datetime'];
-
-        $payment->setDetails($details);
 
         throw new HttpResponse(DotpayApi::RESPONSE_NOTIFY_SUCCESS);
     }

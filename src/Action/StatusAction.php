@@ -25,12 +25,12 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
+        /** @var PaymentInterface $payment */
+        $payment = $request->getModel();
+        $details = $payment->getDetails();
+
         $getHttpRequest = new GetHttpRequest();
         $this->gateway->execute($getHttpRequest);
-
-        /** @var PaymentInterface $payment */
-        $payment = $request->getFirstModel();
-        $details = $payment->getDetails();
 
         if (!isset($details[DotpayApi::STATUS_DETAILS_KEY])) {
             $request->markNew();
@@ -62,6 +62,6 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface
 
     public function supports($request): bool
     {
-        return $request instanceof GetStatusInterface && $request->getFirstModel() instanceof PaymentInterface;
+        return $request instanceof GetStatusInterface && $request->getModel() instanceof PaymentInterface;
     }
 }
