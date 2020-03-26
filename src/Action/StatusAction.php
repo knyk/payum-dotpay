@@ -13,7 +13,6 @@ use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Request\GetStatusInterface;
 use Sylius\Bundle\PayumBundle\Request\GetStatus;
 use Sylius\Component\Core\Model\PaymentInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class StatusAction implements ActionInterface, GatewayAwareInterface
 {
@@ -27,18 +26,31 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface
         RequestNotSupportedException::assertSupports($this, $request);
 
         $getHttpRequest = new GetHttpRequest();
-
         $this->gateway->execute($getHttpRequest);
 
-        if (!isset($getHttpRequest->query[DotpayApi::STATUS_QUERY_PARAM])) {
-            throw new NotFoundHttpException('Missing payment status in response from Dotpay.');
+        /** @var PaymentInterface $payment */
+        $payment = $request->getFirstModel();
+        $details = $payment->getDetails();
+
+        if (!isset($details[DotpayApi::STATUS_DETAILS_KEY])) {
+            $request->markNew();
+
+            return;
         }
 
-        $status = $getHttpRequest->query[DotpayApi::STATUS_QUERY_PARAM];
+        $status = $details[DotpayApi::STATUS_DETAILS_KEY];
 
         switch ($status) {
-            case DotpayApi::STATUS_PENDING:
+            case DotpayApi::STATUS_NEW:
+                $request->markNew();
+                break;
+            case DotpayApi::STATUS_PENDING_PROCESSING:
+            case DotpayApi::STATUS_PENDING_PROCESSING_REALIZATION:
+            case DotpayApi::STATUS_PENDING_PROCESSING_REALIZATION_WAITING:
                 $request->markPending();
+                break;
+            case DotpayApi::STATUS_CAPTURED:
+                $request->markCaptured();
                 break;
             case DotpayApi::STATUS_FAILED:
                 $request->markFailed();

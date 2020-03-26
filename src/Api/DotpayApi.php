@@ -10,12 +10,15 @@ final class DotpayApi
     private const HOST_TEST = 'https://ssl.dotpay.pl/test_payment/';
     private const CHECKSUM_HASH_ALGORITHM = 'sha256';
     private const API_VERSION = 'dev';
-    private const DESCRIPTION_PATTERN = 'Order number: %s';
     private const TYPE = 0;
 
-    public const STATUS_QUERY_PARAM = 'status';
-    public const STATUS_PENDING = 'OK';
-    public const STATUS_FAILED = 'FAIL';
+    public const STATUS_DETAILS_KEY = 'dotpay_operation_status';
+    public const STATUS_NEW = 'new';
+    public const STATUS_PENDING_PROCESSING = 'processing';
+    public const STATUS_PENDING_PROCESSING_REALIZATION_WAITING = 'processing_realization_waiting';
+    public const STATUS_PENDING_PROCESSING_REALIZATION = 'processing_realization';
+    public const STATUS_FAILED = 'rejected';
+    public const STATUS_CAPTURED = 'completed';
 
     public const RESPONSE_NOTIFY_SUCCESS = 'OK';
 
@@ -50,11 +53,6 @@ final class DotpayApi
     public static function apiVersion(): string
     {
         return self::API_VERSION;
-    }
-
-    public static function description(string $orderNumber): string
-    {
-        return sprintf(self::DESCRIPTION_PATTERN, $orderNumber);
     }
 
     public static function type(): int

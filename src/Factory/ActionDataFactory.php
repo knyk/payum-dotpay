@@ -9,15 +9,20 @@ use Knyk\SyliusDotpayPlugin\Formatter\MoneyFormatter;
 use Knyk\SyliusDotpayPlugin\Model\CaptureActionData;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\TokenInterface;
+use Sylius\Bundle\PayumBundle\Provider\PaymentDescriptionProviderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 
 final class ActionDataFactory
 {
     private MoneyFormatter $moneyFormatter;
+    private PaymentDescriptionProviderInterface $paymentDescriptionProvider;
 
-    public function __construct(MoneyFormatter $moneyFormatter)
-    {
+    public function __construct(
+        MoneyFormatter $moneyFormatter,
+        PaymentDescriptionProviderInterface $paymentDescriptionProvider
+    ) {
         $this->moneyFormatter = $moneyFormatter;
+        $this->paymentDescriptionProvider = $paymentDescriptionProvider;
     }
 
     public function createCaptureActionData(
@@ -31,13 +36,14 @@ final class ActionDataFactory
         $token = $capture->getToken();
 
         $control = uniqid();
+        $description = $this->paymentDescriptionProvider->getPaymentDescription($payment);
 
         $checksumData = [
             $api::apiVersion(),
             $api->id(),
             $this->moneyFormatter->format($payment->getAmount()),
             $payment->getCurrencyCode(),
-            $api::description($payment->getOrder()->getNumber()),
+            $description,
             $control,
             $token->getAfterUrl(),
             $api::type(),
@@ -55,7 +61,7 @@ final class ActionDataFactory
             $token->getAfterUrl(),
             (string) $api::type(),
             $notifyToken->getTargetUrl(),
-            $api::description($payment->getOrder()->getNumber()),
+            $description,
             (int) $api->ignoreLastPaymentChannel(),
             $control,
             $chk

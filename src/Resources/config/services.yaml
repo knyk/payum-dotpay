@@ -16,6 +16,7 @@ services:
   Knyk\SyliusDotpayPlugin\Factory\ActionDataFactory:
     arguments:
       $moneyFormatter: '@Knyk\SyliusDotpayPlugin\Formatter\MoneyFormatter'
+      $paymentDescriptionProvider: '@sylius.payment_description_provider'
   
   Knyk\SyliusDotpayPlugin\Action\CaptureAction:
     public: true

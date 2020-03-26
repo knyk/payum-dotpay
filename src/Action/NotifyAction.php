@@ -51,7 +51,7 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface, ApiA
 
         $details = $payment->getDetails();
 
-        if (isset($details['dotpay_operation_status'])) {
+        if (isset($details[DotpayApi::STATUS_DETAILS_KEY])) {
             throw new NotFoundHttpException('Payment already confirmed.');
         }
 
@@ -71,12 +71,12 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface, ApiA
             throw new InvalidArgumentException('Signature is invalid.');
         }
 
-        if ($payment->getAmount() !== $this->moneyFormatter->format($getHttpRequest->request['operation_amount'])) {
+        if ($this->moneyFormatter->format($payment->getAmount()) !== $getHttpRequest->request['operation_amount']) {
             throw new InvalidArgumentException('Payment amount different than operation amount.');
         }
 
         $details['dotpay_operation_number'] = $getHttpRequest->request['operation_number'];
-        $details['dotpay_operation_status'] = $getHttpRequest->request['operation_status'];
+        $details[DotpayApi::STATUS_DETAILS_KEY] = $getHttpRequest->request['operation_status'];
         $details['dotpay_operation_amount'] = $getHttpRequest->request['operation_amount'];
         $details['dotpay_operation_currency'] = $getHttpRequest->request['operation_currency'];
         $details['dotpay_operation_original_amount'] = $getHttpRequest->request['operation_original_amount'];

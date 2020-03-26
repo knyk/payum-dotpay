@@ -41,7 +41,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
         RequestNotSupportedException::assertSupports($this, $request);
 
         /** @var PaymentInterface $payment */
-        $payment = $request->getModel();
+        $payment = $request->getFirstModel();
 
         /** @var TokenInterface $token */
         $token = $request->getToken();
