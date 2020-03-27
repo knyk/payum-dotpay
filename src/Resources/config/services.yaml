@@ -12,13 +12,14 @@ services:
       - { name: form.type }
   
   Knyk\SyliusDotpayPlugin\Formatter\MoneyFormatter:
-  
   Knyk\SyliusDotpayPlugin\Factory\HttpRequestFactory:
+  Knyk\SyliusDotpayPlugin\Provider\ControlProvider:
   
   Knyk\SyliusDotpayPlugin\Factory\ActionDataFactory:
     arguments:
       $moneyFormatter: '@Knyk\SyliusDotpayPlugin\Formatter\MoneyFormatter'
       $paymentDescriptionProvider: '@sylius.payment_description_provider'
+      $controlProvider: '@Knyk\SyliusDotpayPlugin\Provider\ControlProvider'
   
   Knyk\SyliusDotpayPlugin\Action\CaptureAction:
     public: true
