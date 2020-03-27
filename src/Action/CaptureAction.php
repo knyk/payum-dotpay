@@ -19,7 +19,8 @@ use Sylius\Component\Core\Model\PaymentInterface;
 
 final class CaptureAction implements ActionInterface, ApiAwareInterface, GenericTokenFactoryAwareInterface
 {
-    use ApiAwareTrait, GenericTokenFactoryAwareTrait;
+    use ApiAwareTrait;
+    use GenericTokenFactoryAwareTrait;
 
     /**
      * @var DotpayApi
@@ -56,10 +57,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
 
         $payment->setDetails(['control' => $captureActionData->control()]);
 
-        throw new HttpPostRedirect(
-            $this->api->host(),
-            $captureActionData->toArray()
-        );
+        throw new HttpPostRedirect($this->api->host(), $captureActionData->toArray());
     }
 
     public function supports($request): bool

@@ -13,6 +13,8 @@ services:
   
   Knyk\SyliusDotpayPlugin\Formatter\MoneyFormatter:
   
+  Knyk\SyliusDotpayPlugin\Factory\HttpRequestFactory:
+  
   Knyk\SyliusDotpayPlugin\Factory\ActionDataFactory:
     arguments:
       $moneyFormatter: '@Knyk\SyliusDotpayPlugin\Formatter\MoneyFormatter'
@@ -27,6 +29,8 @@ services:
   
   Knyk\SyliusDotpayPlugin\Action\StatusAction:
     public: true
+    arguments:
+      $httpRequestFactory: '@Knyk\SyliusDotpayPlugin\Factory\HttpRequestFactory'
     tags:
       - { name: payum.action, factory: dotpay, alias: payum.action.status }
 
@@ -34,5 +38,7 @@ services:
     public: true
     arguments:
       $moneyFormatter: '@Knyk\SyliusDotpayPlugin\Formatter\MoneyFormatter'
+      $httpRequestFactory: '@Knyk\SyliusDotpayPlugin\Factory\HttpRequestFactory'
+      $actionDataFactory: '@Knyk\SyliusDotpayPlugin\Factory\ActionDataFactory'
     tags:
       - { name: payum.action, factory: dotpay, alias: payum.action.notify }

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Knyk\SyliusDotpayPlugin\Action;
 
 use Knyk\SyliusDotpayPlugin\Api\DotpayApi;
+use Knyk\SyliusDotpayPlugin\Factory\ActionDataFactory;
+use Knyk\SyliusDotpayPlugin\Factory\HttpRequestFactory;
 use Knyk\SyliusDotpayPlugin\Formatter\MoneyFormatter;
-use Knyk\SyliusDotpayPlugin\Model\NotifyActionData;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\ApiAwareTrait;
@@ -15,24 +16,31 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpResponse;
-use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Request\Notify;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class NotifyAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
-    use GatewayAwareTrait, ApiAwareTrait;
+    use GatewayAwareTrait;
+    use ApiAwareTrait;
 
     /**
      * @var DotpayApi
      */
     protected $api;
     private MoneyFormatter $moneyFormatter;
+    private HttpRequestFactory $httpRequestFactory;
+    private ActionDataFactory $actionDataFactory;
 
-    public function __construct(MoneyFormatter $moneyFormatter)
-    {
+    public function __construct(
+        MoneyFormatter $moneyFormatter,
+        HttpRequestFactory $httpRequestFactory,
+        ActionDataFactory $actionDataFactory
+    ) {
         $this->apiClass = DotpayApi::class;
         $this->moneyFormatter = $moneyFormatter;
+        $this->httpRequestFactory = $httpRequestFactory;
+        $this->actionDataFactory = $actionDataFactory;
     }
 
     /**
@@ -44,7 +52,7 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface, ApiA
 
         $details = $request->getModel();
 
-        $getHttpRequest = new GetHttpRequest();
+        $getHttpRequest = $this->httpRequestFactory->createGet();
         $this->gateway->execute($getHttpRequest);
 
         if (isset($details[DotpayApi::STATUS_DETAILS_KEY])) {
@@ -59,7 +67,7 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface, ApiA
             throw new InvalidArgumentException('Control is invalid.');
         }
 
-        $notifyActionData = new NotifyActionData($getHttpRequest->request);
+        $notifyActionData = $this->actionDataFactory->createNotifyActionData($getHttpRequest->request);
 
         $signature = $this->api->generateChecksum($notifyActionData->toArray());
 

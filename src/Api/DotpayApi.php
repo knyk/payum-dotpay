@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Knyk\SyliusDotpayPlugin\Api;
 
-final class DotpayApi
+class DotpayApi
 {
     private const HOST_PRODUCTION = 'https://ssl.dotpay.pl/t2/';
     private const HOST_TEST = 'https://ssl.dotpay.pl/test_payment/';
@@ -50,12 +50,12 @@ final class DotpayApi
         return $this->ignoreLastPaymentChannel;
     }
 
-    public static function apiVersion(): string
+    public function apiVersion(): string
     {
         return self::API_VERSION;
     }
 
-    public static function type(): int
+    public function type(): int
     {
         return self::TYPE;
     }
